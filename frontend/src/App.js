@@ -25,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
         color: 'var(--text-muted)'
       }}>
         <div className="spinner" style={{ width: 28, height: 28 }} />
-        <span>Loading...</span>
+        <span>Loading ...</span>
       </div>
     );
   }
