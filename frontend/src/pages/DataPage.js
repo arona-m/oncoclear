@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import './DataPage.css';
 
-const API = '/api/live';
+const API = `${process.env.REACT_APP_API_URL || 'http://localhost:5001/api'}/live`;
 
 const COUNTRIES = [
   { code: 'USA', name: 'United States' },
