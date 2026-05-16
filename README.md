@@ -3,6 +3,8 @@
 OncoClear is a professional-grade full-stack web application designed to democratize access to global cancer statistics.
 By synthesizing data from the WHO/IARC GLOBOCAN 2022 registry and leveraging Google BigQuery for high-performance data analysis, the platform provides healthcare professionals and the public with real-time insights into cancer incidence, mortality, and prevention strategies.
 
+Check it on live at: https://oncoclear-1.onrender.com
+
 ## Tech Stack
 
 | Layer | Technology |
