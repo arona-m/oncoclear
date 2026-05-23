@@ -6,3 +6,5 @@ build/
 dist/
 server/config/bigquery-service-account.json
 server/config/*.json
+backend/config/bigquery-service-account.json
+backend/config/*.json
