@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, CartesianGrid
@@ -35,57 +36,6 @@ const COUNTRIES = [
   { code: 'ALB', name: 'Albania' },
 ];
 
-const PRESET_QUERIES = [
-  {
-    id: 'top-countries',
-    label: 'Top Countries by Mortality',
-    icon: '⊞',
-    description: 'Which countries have the highest NCD mortality rates? Ranked for a selected year.',
-    paramType: 'year',
-    chartType: 'bar',
-    color: '#0b7285',
-    xKey: 'country_name',
-    yKey: 'mortality_rate',
-    yLabel: 'Mortality Rate (%)',
-  },
-  {
-    id: 'country-trend',
-    label: 'Country Trend Over Time',
-    icon: '◉',
-    description: "How has a country's NCD mortality rate changed over the years?",
-    paramType: 'country',
-    chartType: 'line',
-    color: '#2e7d52',
-    xKey: 'year',
-    yKey: 'mortality_rate',
-    yLabel: 'Mortality Rate (%)',
-  },
-  {
-    id: 'year-comparison',
-    label: 'World Regions Comparison',
-    icon: '⊕',
-    description: 'Compare NCD mortality rates across major world regions for a selected year.',
-    paramType: 'year',
-    chartType: 'bar',
-    color: '#7b3fa0',
-    xKey: 'region',
-    yKey: 'mortality_rate',
-    yLabel: 'Mortality Rate (%)',
-  },
-  {
-    id: 'global-trend',
-    label: 'Global Trend Over Time',
-    icon: '⚕',
-    description: 'The worldwide average NCD mortality rate across all countries and all years.',
-    paramType: 'none',
-    chartType: 'line',
-    color: '#c0392b',
-    xKey: 'year',
-    yKey: 'avg_mortality_rate',
-    yLabel: 'Avg Mortality Rate (%)',
-  },
-];
-
 const CustomTooltip = ({ active, payload, label, yLabel }) => {
   if (!active || !payload?.length) return null;
   return (
@@ -99,7 +49,16 @@ const CustomTooltip = ({ active, payload, label, yLabel }) => {
 };
 
 const DataPage = () => {
-  const [selectedQuery, setSelectedQuery] = useState(PRESET_QUERIES[0]);
+  const { t } = useTranslation();
+
+  const PRESET_QUERIES = [
+    { id: 'top-countries', label: t('data.queries.topCountries'), icon: '⊞', description: t('data.queries.topCountriesDesc'), paramType: 'year', chartType: 'bar', color: '#0b7285', xKey: 'country_name', yKey: 'mortality_rate', yLabel: 'Mortality Rate (%)' },
+    { id: 'country-trend', label: t('data.queries.countryTrend'), icon: '◉', description: t('data.queries.countryTrendDesc'), paramType: 'country', chartType: 'line', color: '#2e7d52', xKey: 'year', yKey: 'mortality_rate', yLabel: 'Mortality Rate (%)' },
+    { id: 'year-comparison', label: t('data.queries.yearComparison'), icon: '⊕', description: t('data.queries.yearComparisonDesc'), paramType: 'year', chartType: 'bar', color: '#7b3fa0', xKey: 'region', yKey: 'mortality_rate', yLabel: 'Mortality Rate (%)' },
+    { id: 'global-trend', label: t('data.queries.globalTrend'), icon: '⚕', description: t('data.queries.globalTrendDesc'), paramType: 'none', chartType: 'line', color: '#c0392b', xKey: 'year', yKey: 'avg_mortality_rate', yLabel: 'Avg Mortality Rate (%)' },
+  ];
+
+  const [selectedQuery, setSelectedQuery] = useState(PRESET_QUERIES[0] || null);
   const [year, setYear] = useState(2019);
   const [country, setCountry] = useState('USA');
   const [availableYears, setAvailableYears] = useState([]);
@@ -107,6 +66,13 @@ const DataPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [hasRun, setHasRun] = useState(false);
+
+  // Set default after PRESET_QUERIES is defined
+  useEffect(() => {
+    // Ensure selectedQuery is initialized if translations changed
+    if (!selectedQuery && PRESET_QUERIES.length) setSelectedQuery(PRESET_QUERIES[0]);
+  // eslint-disable-next-line
+  }, [/* intentionally empty to run once */]);
 
   useEffect(() => {
     axios.get(`${API}/available-years`)
@@ -143,6 +109,7 @@ const DataPage = () => {
 
   const renderChart = () => {
     if (!chartData.length) return null;
+    if (!selectedQuery) return null;
     const { chartType, xKey, yKey, yLabel, color } = selectedQuery;
     const tickFormatter = (val) => typeof val === 'string' && val.length > 14 ? val.slice(0, 13) + '…' : val;
 
@@ -176,8 +143,8 @@ const DataPage = () => {
     <div className="data-page">
       <div className="container">
         <div className="data-hero">
-          <h1>Live BigQuery Data</h1>
-          <p>Select a preset query, adjust parameters, and run it live against the World Bank Health Population dataset.</p>
+          <h1>{t('data.title')}</h1>
+          <p>{t('data.subtitle')}</p>
           <div className="bq-badge">
             <span className="bq-dot" />
             bigquery-public-data.world_bank_health_population
@@ -187,11 +154,11 @@ const DataPage = () => {
         <div className="live-layout">
           {/* Sidebar */}
           <div className="query-sidebar">
-            <div className="sidebar-label">Preset Queries</div>
+            <div className="sidebar-label">{t('data.presetLabel')}</div>
             {PRESET_QUERIES.map(q => (
               <button
                 key={q.id}
-                className={`query-option ${selectedQuery.id === q.id ? 'active' : ''}`}
+                className={`query-option ${selectedQuery?.id === q.id ? 'active' : ''}`}
                 onClick={() => handleQuerySelect(q)}
               >
                 <span className="query-option-icon">{q.icon}</span>
@@ -203,9 +170,9 @@ const DataPage = () => {
             ))}
 
             <div className="sidebar-info">
-              <div className="info-title">About this data</div>
-              <p>NCD Mortality Rate (indicator <code>SH.DYN.NCOM.ZS</code>) measures the probability of dying between age 30–70 from cardiovascular disease, cancer, diabetes, or chronic respiratory disease.</p>
-              <a href="https://data.worldbank.org/indicator/SH.DYN.NCOM.ZS" target="_blank" rel="noopener noreferrer" className="info-link">World Bank indicator →</a>
+              <div className="info-title">{t('data.aboutTitle')}</div>
+              <p>{t('data.aboutText')}</p>
+              <a href="https://data.worldbank.org/indicator/SH.DYN.NCOM.ZS" target="_blank" rel="noopener noreferrer" className="info-link">{t('data.worldBankLink')}</a>
             </div>
           </div>
 
@@ -213,13 +180,13 @@ const DataPage = () => {
           <div className="query-main">
             <div className="query-header card">
               <div>
-                <h3>{selectedQuery.label}</h3>
-                <p>{selectedQuery.description}</p>
+                <h3>{selectedQuery?.label}</h3>
+                <p>{selectedQuery?.description}</p>
               </div>
               <div className="query-params">
-                {selectedQuery.paramType === 'year' && (
+                {selectedQuery?.paramType === 'year' && (
                   <div className="param-group">
-                    <label className="param-label">Year</label>
+                    <label className="param-label">{t('data.yearLabel')}</label>
                     <select className="param-select" value={year} onChange={e => setYear(parseInt(e.target.value))}>
                       {(availableYears.length ? availableYears : [2021,2020,2019,2018,2017,2016,2015]).map(y => (
                         <option key={y} value={y}>{y}</option>
@@ -227,19 +194,19 @@ const DataPage = () => {
                     </select>
                   </div>
                 )}
-                {selectedQuery.paramType === 'country' && (
+                {selectedQuery?.paramType === 'country' && (
                   <div className="param-group">
-                    <label className="param-label">Country</label>
+                    <label className="param-label">{t('data.countryLabel')}</label>
                     <select className="param-select" value={country} onChange={e => setCountry(e.target.value)}>
                       {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
                     </select>
                   </div>
                 )}
-                {selectedQuery.paramType === 'none' && (
-                  <div className="param-none">No parameters — queries all available years globally</div>
+                {selectedQuery?.paramType === 'none' && (
+                  <div className="param-none">{t('data.noParams')}No parameters — queries all available years globally</div>
                 )}
-                <button className="btn btn-primary run-btn" onClick={() => runQuery(selectedQuery, year, country)} disabled={loading}>
-                  {loading ? <><span className="spinner" /> Running...</> : '▶  Run Query'}
+                <button className="btn btn-primary run-btn" onClick={() => runQuery(selectedQuery, year, country)} disabled={loading || !selectedQuery}>
+                  {loading ? <><span className="spinner" /> {t('data.running')}</> : t('data.runButton')}
                 </button>
               </div>
             </div>
@@ -279,18 +246,18 @@ const DataPage = () => {
                   <div>
                     <div className="result-meta-title">{result.label}</div>
                     <div className="result-meta-source">
-                      {result.source} · {chartData.length} rows
+                      {result.source} · {chartData.length} {t('data.rows')}{chartData.length} rows
                       {result.year ? ` · ${result.year}` : ''}
                       {result.country ? ` · ${result.country}` : ''}
                     </div>
                   </div>
-                  <span className="badge badge-green">✓ Live</span>
+                  <span className="badge badge-green">{t('data.liveLabel')}</span>
                 </div>
 
                 <div className="chart-area">{renderChart()}</div>
 
                 <div className="result-table-section">
-                  <div className="table-toggle-label">Raw data</div>
+                  <div className="table-toggle-label">{t('data.rawData')}</div>
                   <div className="result-table-wrap">
                     <table className="data-table">
                       <thead>

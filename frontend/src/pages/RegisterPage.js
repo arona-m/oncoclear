@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import './AuthPages.css';
 
@@ -7,7 +8,7 @@ const COUNTRIES = [
   'Afghanistan','Albania','Algeria','Argentina','Australia','Austria','Bangladesh',
   'Belgium','Brazil','Canada','Chile','China','Colombia','Czech Republic','Denmark',
   'Egypt','Ethiopia','Finland','France','Germany','Ghana','Greece','Hungary','India',
-  'Indonesia','Iran','Iraq','Ireland','Israel','Italy','Japan','Jordan','Kenya','Kosovo',
+  'Indonesia','Iran','Iraq','Ireland','Israel','Italy','Japan','Jordan','Kenya',
   'Malaysia','Mexico','Morocco','Netherlands','New Zealand','Nigeria','Norway',
   'Pakistan','Peru','Philippines','Poland','Portugal','Romania','Russia','Saudi Arabia',
   'South Africa','South Korea','Spain','Sweden','Switzerland','Thailand','Turkey',
@@ -17,6 +18,7 @@ const COUNTRIES = [
 const RegisterPage = () => {
   const { register, isAuthenticated, error, clearError } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '',
     password: '', confirmPassword: '', country: '', dateOfBirth: ''
@@ -125,9 +127,9 @@ const RegisterPage = () => {
             <div className={`step-dot ${step >= 2 ? 'active' : ''}`} />
           </div>
 
-          <h2>Create your account</h2>
+          <h2>{t('auth.registerTitle')}</h2>
           <p className="auth-subtitle">
-            {step === 1 ? 'Step 1 of 2 — Your details' : 'Step 2 of 2 — Set your password'}
+            {step === 1 ? t('auth.step1') : t('auth.step2')}
           </p>
 
           {displayError && (
@@ -141,7 +143,7 @@ const RegisterPage = () => {
               <div className="form-fields fade-in">
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">First name</label>
+                    <label className="form-label">{t('auth.firstName')}</label>
                     <input
                       name="firstName"
                       value={formData.firstName}
@@ -153,7 +155,7 @@ const RegisterPage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Last name</label>
+                    <label className="form-label">{t('auth.lastName')}</label>
                     <input
                       name="lastName"
                       value={formData.lastName}
@@ -166,7 +168,7 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email address</label>
+                  <label className="form-label">{t('auth.email')}</label>
                   <input
                     name="email"
                     type="email"
@@ -180,7 +182,7 @@ const RegisterPage = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Country <span className="optional">(optional)</span></label>
+                    <label className="form-label">{t('auth.country')}<span className="optional">{t('auth.optional')}</span></label>
                     <select
                       name="country"
                       value={formData.country}
@@ -192,7 +194,7 @@ const RegisterPage = () => {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Date of birth <span className="optional">(optional)</span></label>
+                    <label className="form-label">{t('auth.dateOfBirth')}<span className="optional">{t('auth.optional')}</span></label>
                     <input
                       name="dateOfBirth"
                       type="date"
@@ -213,7 +215,7 @@ const RegisterPage = () => {
             {step === 2 && (
               <div className="form-fields fade-in">
                 <div className="form-group">
-                  <label className="form-label">Password</label>
+                  <label className="form-label">{t('auth.password')}</label>
                   <input
                     name="password"
                     type="password"
@@ -228,14 +230,14 @@ const RegisterPage = () => {
                     {formData.password && (
                       <>
                         <div className={`strength-bar ${getStrength(formData.password)}`} />
-                        <span className="strength-label">{getStrengthLabel(formData.password)}</span>
+                        <span className="strength-label">{getStrengthLabel(formData.password, t)}</span>
                       </>
                     )}
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Confirm password</label>
+                  <label className="form-label">{t('auth.confirmPassword')}</label>
                   <input
                     name="confirmPassword"
                     type="password"
@@ -249,7 +251,7 @@ const RegisterPage = () => {
 
                 <div className="form-actions">
                   <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>
-                    ← Back
+                    {t('auth.back')}
                   </button>
                   <button type="submit" className="btn btn-primary" disabled={loading}>
                     {loading ? <span className="spinner" /> : 'Create account'}
@@ -265,8 +267,8 @@ const RegisterPage = () => {
           </form>
 
           <div className="auth-footer">
-            <span>Already have an account?</span>
-            <Link to="/login" className="auth-link">Sign in</Link>
+            <span>{t('auth.alreadyHave')}</span>
+            <Link to="/login" className="auth-link">{t('auth.signIn')}</Link>
           </div>
         </div>
       </div>
@@ -286,9 +288,9 @@ function getStrength(pwd) {
   return 'strong';
 }
 
-function getStrengthLabel(pwd) {
+function getStrengthLabel(pwd, t) {
   const s = getStrength(pwd);
-  return { weak: 'Weak', fair: 'Fair', good: 'Good', strong: 'Strong' }[s];
+  return { weak: t('auth.strength.weak'), fair: t('auth.strength.fair'), good: t('auth.strength.good'), strong: t('auth.strength.strong') }[s];
 }
 
 export default RegisterPage;

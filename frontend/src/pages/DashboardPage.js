@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useCancerData } from '../hooks/useCancerData';
@@ -17,12 +18,11 @@ const fmt = (n) => {
 const DashboardPage = () => {
   const { user } = useAuth();
   const { getOverview, loading } = useCancerData();
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    getOverview().then(res => {
-      if (res?.success) setData(res.data);
-    });
+    getOverview().then(res => { if (res?.success) setData(res.data); });
   }, [getOverview]);
 
   const who = data?.who_globocan;
@@ -35,147 +35,79 @@ const DashboardPage = () => {
     deaths: Math.round(c.deaths / 1000),
   }));
 
-  const pieData = regions.map(r => ({
-    name: r.region,
-    value: r.new_cases,
-    share: r.share_pct
-  }));
+  const pieData = regions.map(r => ({ name: r.region, value: r.new_cases, share: r.share_pct }));
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const greeting = hour < 12 ? t('dashboard.greeting') : hour < 17 ? t('dashboard.greetingAfternoon') : t('dashboard.greetingEvening');
 
   return (
     <div className="dashboard fade-in">
       <div className="container">
-        {/* Header */}
         <div className="dashboard-header">
           <div>
-            <h1 className="dashboard-greeting">
-              {greeting}, {user?.firstName}.
-            </h1>
-            <p>Here's the global cancer landscape — data sourced from WHO/IARC GLOBOCAN 2022.</p>
+            <h1 className="dashboard-greeting">{greeting}, {user?.firstName}.</h1>
+            <p>{t('dashboard.subtitle')}</p>
           </div>
-          <Link to="/search" className="btn btn-primary">
-            Search a cancer type →
-          </Link>
+          <Link to="/search" className="btn btn-primary">{t('dashboard.searchButton')}</Link>
         </div>
 
         {loading && (
           <div className="loading-state">
             <div className="spinner" style={{ width: 32, height: 32 }} />
-            <span>Loading cancer data...</span>
+            <span>{t('dashboard.loading')}</span>
           </div>
         )}
 
         {data && (
           <>
-            {/* KPI Cards */}
             <div className="kpi-grid">
-              <div className="kpi-card card">
-                <div className="kpi-icon" style={{ background: '#e6f7fa', color: '#0b7285' }}>⊕</div>
-                <div>
-                  <div className="kpi-value">{fmt(who?.global?.new_cases)}</div>
-                  <div className="kpi-label">New cases in 2022</div>
-                </div>
-              </div>
-              <div className="kpi-card card">
-                <div className="kpi-icon" style={{ background: '#fdf2f2', color: '#c0392b' }}>✕</div>
-                <div>
-                  <div className="kpi-value">{fmt(who?.global?.deaths)}</div>
-                  <div className="kpi-label">Deaths in 2022</div>
-                </div>
-              </div>
-              <div className="kpi-card card">
-                <div className="kpi-icon" style={{ background: '#f0faf5', color: '#2e7d52' }}>◎</div>
-                <div>
-                  <div className="kpi-value">{fmt(who?.global?.prevalence_5yr)}</div>
-                  <div className="kpi-label">Living with cancer (5yr)</div>
-                </div>
-              </div>
-              <div className="kpi-card card">
-                <div className="kpi-icon" style={{ background: '#fffbeb', color: '#d97706' }}>⚑</div>
-                <div>
-                  <div className="kpi-value">50%</div>
-                  <div className="kpi-label">of cancers preventable</div>
-                </div>
-              </div>
+              <div className="kpi-card card"><div className="kpi-icon" style={{ background: '#e6f7fa', color: '#0b7285' }}>⊕</div><div><div className="kpi-value">{fmt(who?.global?.new_cases)}</div><div className="kpi-label">{t('dashboard.kpi.cases')}</div></div></div>
+              <div className="kpi-card card"><div className="kpi-icon" style={{ background: '#fdf2f2', color: '#c0392b' }}>✕</div><div><div className="kpi-value">{fmt(who?.global?.deaths)}</div><div className="kpi-label">{t('dashboard.kpi.deaths')}</div></div></div>
+              <div className="kpi-card card"><div className="kpi-icon" style={{ background: '#f0faf5', color: '#2e7d52' }}>◎</div><div><div className="kpi-value">{fmt(who?.global?.prevalence_5yr)}</div><div className="kpi-label">{t('dashboard.kpi.living')}</div></div></div>
+              <div className="kpi-card card"><div className="kpi-icon" style={{ background: '#fffbeb', color: '#d97706' }}>⚑</div><div><div className="kpi-value">50%</div><div className="kpi-label">{t('dashboard.kpi.preventable')}</div></div></div>
             </div>
 
-            {/* Charts Row */}
             <div className="charts-row">
-              {/* Bar Chart */}
               <div className="chart-card card">
                 <div className="chart-header">
-                  <h3>Top 10 Cancers by Cases vs Deaths</h3>
-                  <span className="badge badge-teal">2022 data · thousands</span>
+                  <h3>{t('dashboard.chart1Title')}</h3>
+                  <span className="badge badge-teal">{t('dashboard.chart1Badge')}</span>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fontSize: 11, fill: '#8896ab' }}
-                      angle={-40}
-                      textAnchor="end"
-                      interval={0}
-                    />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#8896ab' }} angle={-40} textAnchor="end" interval={0} />
                     <YAxis tick={{ fontSize: 11, fill: '#8896ab' }} />
-                    <Tooltip
-                      formatter={(v, n) => [`${v}K`, n === 'cases' ? 'New Cases' : 'Deaths']}
-                      contentStyle={{
-                        background: 'white',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: 8,
-                        fontSize: 12
-                      }}
-                    />
+                    <Tooltip formatter={(v, n) => [`${v}K`, n === 'cases' ? t('dashboard.newCases') : t('dashboard.deaths')]} contentStyle={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 12 }} />
                     <Bar dataKey="cases" fill="#1a9aad" radius={[4,4,0,0]} name="cases" />
                     <Bar dataKey="deaths" fill="#e07070" radius={[4,4,0,0]} name="deaths" />
                   </BarChart>
                 </ResponsiveContainer>
                 <div className="chart-legend">
-                  <span className="legend-item"><span className="dot teal" />New Cases</span>
-                  <span className="legend-item"><span className="dot red" />Deaths</span>
+                  <span className="legend-item"><span className="dot teal" />{t('dashboard.newCases')}</span>
+                  <span className="legend-item"><span className="dot red" />{t('dashboard.deaths')}</span>
                 </div>
               </div>
 
-              {/* Pie Chart */}
               <div className="chart-card card">
                 <div className="chart-header">
-                  <h3>Cases by World Region</h3>
-                  <span className="badge badge-teal">GLOBOCAN 2022</span>
+                  <h3>{t('dashboard.chart2Title')}</h3>
+                  <span className="badge badge-teal">{t('dashboard.chart2Badge')}</span>
                 </div>
                 <ResponsiveContainer width="100%" height={260}>
                   <PieChart>
-                    <Pie
-                      data={pieData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      dataKey="value"
-                      nameKey="name"
-                    >
-                      {pieData.map((_, i) => (
-                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                      ))}
+                    <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="value" nameKey="name">
+                      {pieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                     </Pie>
-                    <Tooltip
-                      formatter={(v, n, p) => [`${fmt(v)} cases (${p.payload.share}%)`, '']}
-                      contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0' }}
-                    />
-                    <Legend
-                      formatter={(v) => <span style={{ fontSize: 11 }}>{v}</span>}
-                      iconSize={8}
-                    />
+                    <Tooltip formatter={(v, n, p) => [`${fmt(v)} cases (${p.payload.share}%)`, '']} contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0' }} />
+                    <Legend formatter={(v) => <span style={{ fontSize: 11 }}>{v}</span>} iconSize={8} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Top Cancers Table */}
             <div className="card table-card">
               <div className="chart-header">
-                <h3>Global Cancer Rankings</h3>
+                <h3>{t('dashboard.tableTitle')}</h3>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <span className="badge badge-teal">WHO/IARC</span>
                   <span className="badge badge-amber">GLOBOCAN 2022</span>
@@ -185,12 +117,12 @@ const DashboardPage = () => {
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th>Rank</th>
-                      <th>Cancer Type</th>
-                      <th>ICD-10</th>
-                      <th>New Cases (2022)</th>
-                      <th>Deaths (2022)</th>
-                      <th>Fatality Rate</th>
+                      <th>{t('dashboard.tableRank')}</th>
+                      <th>{t('dashboard.tableCancer')}</th>
+                      <th>{t('dashboard.tableICD')}</th>
+                      <th>{t('dashboard.tableCases')}</th>
+                      <th>{t('dashboard.tableDeaths')}</th>
+                      <th>{t('dashboard.tableFatality')}</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -205,17 +137,8 @@ const DashboardPage = () => {
                           <td><code className="icd-code">{c.icd10}</code></td>
                           <td className="number-cell">{fmt(c.new_cases)}</td>
                           <td className="number-cell death-num">{fmt(c.deaths)}</td>
-                          <td>
-                            <span className={`badge ${severity}`}>{fatalityRate}%</span>
-                          </td>
-                          <td>
-                            <Link
-                              to={`/search?q=${c.name.toLowerCase().split(' ')[0]}`}
-                              className="table-link"
-                            >
-                              Learn →
-                            </Link>
-                          </td>
+                          <td><span className={`badge ${severity}`}>{fatalityRate}%</span></td>
+                          <td><Link to={`/search?q=${c.name.toLowerCase().split(' ')[0]}`} className="table-link">{t('dashboard.learnLink')}</Link></td>
                         </tr>
                       );
                     })}
@@ -223,17 +146,16 @@ const DashboardPage = () => {
                 </table>
               </div>
               <div className="table-footer">
-                <span>Source: IARC/WHO GLOBOCAN 2022 — <a href="https://gco.iarc.fr" target="_blank" rel="noopener noreferrer">gco.iarc.fr</a></span>
+                <span>{t('dashboard.tableSource')} <a href="https://gco.iarc.fr" target="_blank" rel="noopener noreferrer">gco.iarc.fr</a></span>
               </div>
             </div>
 
-            {/* CTA */}
             <div className="cta-banner">
               <div>
-                <h3>Search any cancer type</h3>
-                <p>Get prevention tips, risk factors, and live global statistics from BigQuery.</p>
+                <h3>{t('dashboard.ctaTitle')}</h3>
+                <p>{t('dashboard.ctaSubtitle')}</p>
               </div>
-              <Link to="/search" className="btn btn-primary">Start searching →</Link>
+              <Link to="/search" className="btn btn-primary">{t('dashboard.ctaButton')}</Link>
             </div>
           </>
         )}

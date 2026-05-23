@@ -83,7 +83,8 @@ router.get('/search', auth, async (req, res) => {
     );
 
     // Get cancer data
-    const result = await searchCancerType(searchTerm);
+    const lang = req.query.lang || 'en';
+    const result = await searchCancerType(searchTerm, lang);
     
     if (!result.success) {
       return res.status(404).json({
