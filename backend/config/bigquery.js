@@ -40,7 +40,7 @@ const CANCER_REGISTRY = {
       'Shmangni tymin pasiv'
     ],
     early_signs: ['Persistent cough', 'Coughing up blood', 'Shortness of breath', 'Chest pain', 'Hoarseness', 'Unexplained weight loss'],
-    early_signs_sq: ['Kollë e vazhdueshme', 'Kollitje gjaku', 'Vështirësi në frymëmarrje', 'Dhimbje gjoksi', 'Zëvendosje e zërit', 'Humbje peshe e pashpjegueshme'],
+    early_signs_sq: ['Kollë e vazhdueshme', 'Kollitje gjaku', 'Vështirësi në frymëmarrje', 'Dhimbje gjoksi', 'Ndryshim i rëndë i zërit', 'Humbje peshe e pashpjegueshme'],
     survival_rate_5yr: '22%',
     screening: 'Annual low-dose CT scan recommended for heavy smokers aged 50-80',
     screening_sq: 'Skanim CT me dozë të ulët çdo vit rekomandohet për duhanpirësit e rëndë të moshës 50-80 vjeç'
@@ -71,7 +71,7 @@ const CANCER_REGISTRY = {
       'Bëni mamografi rregullisht'
     ],
     early_signs: ['Lump in breast or underarm', 'Swelling or thickening', 'Dimpling of skin', 'Nipple pain or discharge', 'Redness or flaky skin'],
-    early_signs_sq: ['Gungë në gji ose nënsuall', 'Fryrje ose trashje', 'Gdhendje e lëkurës', 'Dhimbje ose rrjedhje nga thithja', 'Skuqje ose lëkurë çoçe'],
+    early_signs_sq: ['Gungë në gji ose nën sqetull', 'Fryrje ose trashje', 'Gropëzim i lëkurës', 'Dhimbje ose rrjedhje nga thithja', 'Skuqje ose lëkurë e krisur'],
     survival_rate_5yr: '91%',
     screening: 'Annual mammograms starting at age 40-45 (consult your doctor)',
     screening_sq: 'Mamografi vjetore duke filluar nga mosha 40-45 vjeç (konsultohuni me mjekun tuaj)'
@@ -148,7 +148,7 @@ const CANCER_REGISTRY = {
     description: 'The most common cancer globally. Melanoma is the most serious type.',
     description_sq: 'Kanceri më i zakonshëm globalisht. Melanoma është lloji më i rëndë.',
     risk_factors: ['UV radiation exposure', 'Fair skin', 'History of sunburns', 'Family history', 'Many moles', 'Weakened immune system'],
-    risk_factors_sq: ['Ekspozimi ndaj rrezatimit UV', 'Lëkurë e çelët', 'Historia e djegieve nga dielli', 'Historia familjare', 'Shumë nishore', 'Sistemi imunitar i dobësuar'],
+    risk_factors_sq: ['Ekspozimi ndaj rrezatimit UV', 'Lëkurë e hapur', 'Histori e djegieve nga dielli', 'Historia familjare', 'Shumë nishana', 'Sistemi imunitar i dobësuar'],
     prevention: [
       'Use sunscreen SPF 30+ every day',
       'Seek shade, especially midday',
@@ -166,7 +166,7 @@ const CANCER_REGISTRY = {
       'Bëni kontrolle profesionale vjetore të lëkurës'
     ],
     early_signs: ['New unusual moles', 'Change in existing mole', 'Asymmetric lesions', 'Irregular borders', 'Multiple colors', 'Diameter larger than 6mm'],
-    early_signs_sq: ['Nishore të reja të pazakonta', 'Ndryshim në nishorë ekzistuese', 'Lezion asimetrik', 'Kufij të parregullt', 'Ngjyra të shumta', 'Diametër më i madh se 6mm'],
+    early_signs_sq: ['Nishane të reja të pazakonta', 'Ndryshim në nishanë ekzistuese', 'Lezion asimetrik', 'Kufij të parregullt të nishanit eksiztues', 'Ngjyra të shumta', 'Diametër më i madh se 6mm'],
     survival_rate_5yr: '94% (localized), 32% (distant)',
     screening: 'Annual full-body skin exam by dermatologist; monthly self-exams',
     screening_sq: 'Ekzaminim vjetor i plotë i lëkurës nga dermatologu; vetë-ekzaminime mujore'

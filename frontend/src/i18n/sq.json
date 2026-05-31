@@ -85,7 +85,7 @@
     "greeting": "Mirëmëngjes",
     "greetingAfternoon": "Mirëdita",
     "greetingEvening": "Mirëmbrëma",
-    "subtitle": "Ja panorama globale e kancerit — të dhëna nga OBSH/IARC GLOBOCAN 2022.",
+    "subtitle": "Panorama globale e kancerit — të dhëna nga OBSH/IARC GLOBOCAN 2022.",
     "searchButton": "Kërkoni një lloj kanceri →",
     "loading": "Duke ngarkuar të dhënat e kancerit...",
     "kpi": {
@@ -144,13 +144,13 @@
     "subtitle": "Zgjidhni një pyetje të paracaktuar, rregulloni parametrat dhe ekzekutojeni drejtpërdrejt ndaj bazës së të dhënave të Popullatës Shëndetësore të Bankës Botërore.",
     "queries": {
       "topCountries": "Vendet Kryesore sipas Vdekshmërisë",
-      "topCountriesDesc": "Cilat vende kanë shkallët më të larta të vdekshmërisë nga SNK? Renditur sipas vitit të zgjedhur.",
+      "topCountriesDesc": "Cilat vende kanë shkallët më të larta të vdekshmërisë nga SJT(semundje jo të transmetueshme)? Renditur sipas vitit të zgjedhur.",
       "countryTrend": "Trendi i Vendit me Kalimin e Kohës",
-      "countryTrendDesc": "Si ka ndryshuar shkalla e vdekshmërisë nga SNK e një vendi gjatë viteve?",
+      "countryTrendDesc": "Si ka ndryshuar shkalla e vdekshmërisë nga SJT e një vendi gjatë viteve?",
       "yearComparison": "Krahasimi i Rajoneve Botërore",
-      "yearComparisonDesc": "Krahasoni shkallët e vdekshmërisë nga SNK nëpër rajonet kryesore botërore për një vit të zgjedhur.",
+      "yearComparisonDesc": "Krahasoni shkallët e vdekshmërisë nga SJT nëpër rajonet kryesore botërore për një vit të zgjedhur.",
       "globalTrend": "Trendi Global me Kalimin e Kohës",
-      "globalTrendDesc": "Mesatarja botërore e shkallës së vdekshmërisë nga SNK nëpër të gjitha vendet dhe të gjithë vitet."
+      "globalTrendDesc": "Mesatarja botërore e shkallës së vdekshmërisë nga SJT nëpër të gjitha vendet dhe të gjithë vitet."
     },
     "presetLabel": "Pyetje të Paracaktuara",
     "yearLabel": "Viti",
@@ -168,7 +168,7 @@
     "rows": "rreshta",
     "rawData": "Të dhëna bruto",
     "aboutTitle": "Rreth këtyre të dhënave",
-    "aboutText": "Shkalla e Vdekshmërisë nga SNK (tregues SH.DYN.NCOM.ZS) mat probabilitetin e vdekjes midis moshave 30–70 nga sëmundjet kardiovaskulare, kanceri, diabeti ose sëmundjet kronike të frymëmarrjes.",
+    "aboutText": "Shkalla e Vdekshmërisë nga SJT (tregues SH.DYN.NCOM.ZS) mat probabilitetin e vdekjes midis moshave 30–70 nga sëmundjet kardiovaskulare, kanceri, diabeti ose sëmundjet kronike të frymëmarrjes.",
     "worldBankLink": "Tregues i Bankës Botërore →"
   },
   "cancerTypes": {
